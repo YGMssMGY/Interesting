@@ -1,11 +1,7 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
-
+int N;
 int main() {
-    int N;
     cin >> N;
     vector<pair<int, int>> times(N);
     for (int i = 0; i < N; i++) {
@@ -26,8 +22,6 @@ int main() {
         }
     }
     longest_milk = max(longest_milk, end - start);
-
     cout << longest_milk << " " << longest_idle << endl;
-
     return 0;
 }
