@@ -49,7 +49,7 @@
 
         // Create the sun with a texture
         const sunGeo = new THREE.SphereGeometry(1, 32, 32);
-        const sunTexture = loader.load('path/to/sunTexture.jpg'); // Replace with the path to your sun texture
+        const sunTexture = loader.load('sun.jpg'); // Replace with the path to your sun texture
         const sunMat = new THREE.MeshBasicMaterial({ map: sunTexture });
         const sun = new THREE.Mesh(sunGeo, sunMat);
         scene.add(sun);
@@ -57,7 +57,7 @@
 
         // Create the earth with a texture
         const earthGeo = new THREE.SphereGeometry(0.5, 32, 32);
-        const earthTexture = loader.load('path/to/earthTexture.jpg'); // Replace with the path to your earth texture
+        const earthTexture = loader.load('earth.jpg'); // Replace with the path to your earth texture
         const earthMat = new THREE.MeshBasicMaterial({ map: earthTexture });
         const earth = new THREE.Mesh(earthGeo, earthMat);
         earth.position.x = 2; // Position the earth 2 units away from the sun
@@ -65,7 +65,7 @@
 
         // Create the moon with a texture
         const moonGeo = new THREE.SphereGeometry(0.25, 32, 32);
-        const moonTexture = loader.load('path/to/moonTexture.jpg'); // Replace with the path to your moon texture
+        const moonTexture = loader.load('moon.jpg'); // Replace with the path to your moon texture
         const moonMat = new THREE.MeshBasicMaterial({ map: moonTexture });
         const moon = new THREE.Mesh(moonGeo, moonMat);
         moon.position.x = 0.75; // Position the moon 0.75 units away from the earth
