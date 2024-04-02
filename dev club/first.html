@@ -34,10 +34,12 @@
         renderer.setPixelRatio(window.devicePixelRatio);
 
         //Create a DirectionalLight and turn on shadows for the light
-        const light = new THREE.DirectionalLight( 0xffffff, 1 );
+        const light = new THREE.DirectionalLight( 0xffffff, 1, 100);
         light.position.set( 0, 0, 1 ); //default; light shining from top
         light.castShadow = true; // default false
         scene.add( light );
+        // Create a texture loader
+        const loader = new THREE.TextureLoader();
 
         //Set up shadow properties for the light
         light.shadow.mapSize.width = 512; // default
@@ -45,19 +47,30 @@
         light.shadow.camera.near = 0.5; // default
         light.shadow.camera.far = 500; // default
 
-        const cubeGeo = new THREE.BoxGeometry(1, 1, 1); 
-        const cubeMat = new THREE.MeshLambertMaterial({ color: 0xffffff }); 
-        const cube = new THREE.Mesh(cubeGeo, cubeMat); 
-        cube.recieveShadow = true;
-        cube.castShadow = true;
-        scene.add(cube); 
+        // Create the sun with a texture
+        const sunGeo = new THREE.SphereGeometry(1, 32, 32);
+        const sunTexture = loader.load('path/to/sunTexture.jpg'); // Replace with the path to your sun texture
+        const sunMat = new THREE.MeshBasicMaterial({ map: sunTexture });
+        const sun = new THREE.Mesh(sunGeo, sunMat);
+        scene.add(sun);
 
-        const donuGeo = new THREE.TorusGeometry(2,0.1,4,40);
-        const donuMat = new THREE.MeshLambertMaterial({color: 0xff0000});
-        const donu = new THREE.Mesh(donuGeo, donuMat);
-        scene.add(donu);
-        cube.recieveShadow = true;
-        cube.castShadow = true;
+
+        // Create the earth with a texture
+        const earthGeo = new THREE.SphereGeometry(0.5, 32, 32);
+        const earthTexture = loader.load('path/to/earthTexture.jpg'); // Replace with the path to your earth texture
+        const earthMat = new THREE.MeshBasicMaterial({ map: earthTexture });
+        const earth = new THREE.Mesh(earthGeo, earthMat);
+        earth.position.x = 2; // Position the earth 2 units away from the sun
+        scene.add(earth);
+
+        // Create the moon with a texture
+        const moonGeo = new THREE.SphereGeometry(0.25, 32, 32);
+        const moonTexture = loader.load('path/to/moonTexture.jpg'); // Replace with the path to your moon texture
+        const moonMat = new THREE.MeshBasicMaterial({ map: moonTexture });
+        const moon = new THREE.Mesh(moonGeo, moonMat);
+        moon.position.x = 0.75; // Position the moon 0.75 units away from the earth
+        earth.add(moon); // Add the moon to the earth so it moves with the earth
+
 
         scene.add(camera);
 
@@ -66,18 +79,20 @@
         camera.position.z = 5; 
         //camera.rotation.y = 1.57;
 
-        function animate() { 
-            requestAnimationFrame(animate); 
-            //cube.position.x += 0.01;
-            cube.rotation.x += 0.01; 
-            cube.rotation.y += 0.01; 
-            donu.rotation.x += 0.05;
-            donu.rotation.y += 0.1;
-            donu.rotation.z += 0.05;
+        function animate() {
+        requestAnimationFrame(animate);
 
-            renderer.render(scene, camera); 
+        // Rotate the earth around the sun
+        earth.position.x = Math.cos(Date.now() / 2000) * 2;
+        earth.position.z = Math.sin(Date.now() / 2000) * 2;
+
+        // Rotate the moon around the earth
+        moon.position.x = Math.cos(Date.now() / 1000) * 0.75;
+        moon.position.z = Math.sin(Date.now() / 1000) * 0.75;
+
+        renderer.render(scene, camera);
         }
-        animate(); 
+        animate();
 
 
     </script>
