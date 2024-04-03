@@ -79,32 +79,51 @@
         mars.position.x = 2; // Position Mars 2 units away from the Earth
         scene.add(mars);
 
-        // Create a ring around Mars
-        const ringGeo = new THREE.RingGeometry(0.6, 0.7, 32); // Adjust inner radius, outer radius, and segments as needed
-        const ringMat = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.rotation.x = Math.PI / 2; // Rotate the ring 90 degrees around the x-axis
-        mars.add(ring); // Add the ring to Mars so it moves with Mars
+        // Create Saturn with a texture
+        const saturnGeo = new THREE.SphereGeometry(0.6, 32, 32); // Adjust size as needed
+        const saturnTexture = loader.load('joe.jpg'); // Replace with the path to your Saturn texture
+        const saturnMat = new THREE.MeshBasicMaterial({ map: saturnTexture });
+        const saturn = new THREE.Mesh(saturnGeo, saturnMat);
+        saturn.position.x = 4; // Position Saturn 4 units away from the Earth
+        scene.add(saturn);
 
+        // Create rings around Saturn
+        const saturnRingGeo = new THREE.RingGeometry(0.7, 1, 32); // Adjust inner radius, outer radius, and segments as needed
+        const saturnRingMat = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide });
+        const saturnRing = new THREE.Mesh(saturnRingGeo, saturnRingMat);
+        saturnRing.rotation.x = Math.PI / 2; // Rotate the ring 90 degrees around the x-axis
+        saturn.add(saturnRing); // Add the ring to Saturn so it moves with Saturn
         scene.add(camera);
 
         renderer.shadowMap.enabled = true;
 
-        camera.position.z = 5; 
+        camera.position.z = 8; 
         camera.position.y = 0.5;
         //camera.rotation.y = 1.57;
-
+        let marsRotation = 0; // Initialize a variable to keep track of Mars's rotation around the sun
+        let saturnRotation = 0;
         function animate() {
-            requestAnimationFrame(animate);
-
+            requestAnimationFrame(animate); 
             // Rotate the earth around the sun
             earth.position.x = Math.cos(Date.now() / 2000) * 2;
             earth.position.z = Math.sin(Date.now() / 2000) * 2;
             // Rotate the moon around the earth
             moon.position.x = Math.cos(Date.now() / 1000) * 0.75;
             moon.position.z = Math.sin(Date.now() / 1000) * 0.75;
+            // Make Mars spin
+            mars.rotation.y += 0.01; // Adjust as needed
 
+            // Make Mars rotate around the sun
+            marsRotation += 0.01; // Adjust as needed
+            mars.position.x = 4 * Math.cos(marsRotation);
+            mars.position.z = 4 * Math.sin(marsRotation);
             renderer.render(scene, camera);
+            saturn.rotation.y += 0.01; // Adjust as needed
+
+            // Make Saturn rotate around the sun
+            saturnRotation += 0.01; // Adjust as needed
+            saturn.position.x = 6 * Math.cos(saturnRotation);
+            saturn.position.z = 6 * Math.sin(saturnRotation);
         }
         animate();
 
