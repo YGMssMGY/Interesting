@@ -70,27 +70,41 @@
         const moon = new THREE.Mesh(moonGeo, moonMat);
         moon.position.x = 0.75; // Position the moon 0.75 units away from the earth
         earth.add(moon); // Add the moon to the earth so it moves with the earth
+        
+        // Create Mars with a texture
+        const marsGeo = new THREE.SphereGeometry(0.5, 32, 32); // Adjust size as needed
+        const marsTexture = loader.load('mars.jpg'); // Replace with the path to your Mars texture
+        const marsMat = new THREE.MeshBasicMaterial({ map: marsTexture });
+        const mars = new THREE.Mesh(marsGeo, marsMat);
+        mars.position.x = 2; // Position Mars 2 units away from the Earth
+        scene.add(mars);
 
+        // Create a ring around Mars
+        const ringGeo = new THREE.RingGeometry(0.6, 0.7, 32); // Adjust inner radius, outer radius, and segments as needed
+        const ringMat = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2; // Rotate the ring 90 degrees around the x-axis
+        mars.add(ring); // Add the ring to Mars so it moves with Mars
 
         scene.add(camera);
 
         renderer.shadowMap.enabled = true;
 
         camera.position.z = 5; 
+        camera.position.y = 0.5;
         //camera.rotation.y = 1.57;
 
         function animate() {
-        requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
 
-        // Rotate the earth around the sun
-        earth.position.x = Math.cos(Date.now() / 2000) * 2;
-        earth.position.z = Math.sin(Date.now() / 2000) * 2;
+            // Rotate the earth around the sun
+            earth.position.x = Math.cos(Date.now() / 2000) * 2;
+            earth.position.z = Math.sin(Date.now() / 2000) * 2;
+            // Rotate the moon around the earth
+            moon.position.x = Math.cos(Date.now() / 1000) * 0.75;
+            moon.position.z = Math.sin(Date.now() / 1000) * 0.75;
 
-        // Rotate the moon around the earth
-        moon.position.x = Math.cos(Date.now() / 1000) * 0.75;
-        moon.position.z = Math.sin(Date.now() / 1000) * 0.75;
-
-        renderer.render(scene, camera);
+            renderer.render(scene, camera);
         }
         animate();
 
