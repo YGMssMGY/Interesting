@@ -57,7 +57,7 @@
 
         // Create the earth with a texture
         const earthGeo = new THREE.SphereGeometry(0.5, 32, 32);
-        const earthTexture = loader.load('image.jpg'); // Replace with the path to your earth texture
+        const earthTexture = loader.load('Image.jpg'); // Replace with the path to your earth texture
         const earthMat = new THREE.MeshBasicMaterial({ map: earthTexture });
         const earth = new THREE.Mesh(earthGeo, earthMat);
         earth.position.x = 2; // Position the earth 2 units away from the sun
