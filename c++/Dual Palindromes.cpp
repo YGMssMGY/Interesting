@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 string toBaseB(int num, int B) {
     string res = "";
     while (num > 0) {
@@ -12,7 +11,6 @@ string toBaseB(int num, int B) {
     reverse(res.begin(), res.end());
     return res;
 }
-
 bool isPalindrome(string str) {
     string rev = str;
     reverse(rev.begin(), rev.end());
@@ -22,7 +20,8 @@ bool isPalindrome(string str) {
 int main() {
     int N, S;
     cin >> N >> S;
-    for (int num = S + 1, count = 0; count < N; num++) {
+    int count = 0;
+    for (int num = S + 1; count < N; num++) {
         int baseCount = 0;
         for (int B = 2; B <= 10; B++) {
             if (isPalindrome(toBaseB(num, B))) {
