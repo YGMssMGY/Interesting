@@ -64,7 +64,9 @@ def amdGPUPerformance(ggenInput):
 def resolutionPerformance(resInput):
     global totalScore  # 声明 totalScore 为全局变量
     scores = {"1": -10, "2": -5, "3": 0, "4": 5, "5": 10}
+    print("Before: ", totalScore)  # 打印修改前的 totalScore
     totalScore += scores.get(resInput, 0)  # 更新 totalScore
+    print("After: ", totalScore)  # 打印修改后的 totalScore
 # calculation for the final score
 #def totalScoreCalculation(performanceScores):
  #   finalScore = performanceScores / 10
