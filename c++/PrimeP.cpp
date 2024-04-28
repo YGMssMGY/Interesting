@@ -1,40 +1,37 @@
 #include <bits/stdc++.h>
-using namespace std;
 
-bool isPrime(int n) {
-    if (n <= 1) {
-        return false;
-    }
-    for (int i = 2; i * i <= n; i++) {
-        if (n % i == 0) {
-            return false;
-        }
+bool isPrime(int num) {
+    if (num <= 1) return false;
+    if (num == 2) return true;
+    if (num % 2 == 0) return false;
+    for (int i = 3; i <= sqrt(num); i += 2) {
+        if (num % i == 0) return false;
     }
     return true;
 }
 
-bool isPalindrome(int n) {
-    int reversed = 0, original = n;
-    while (n != 0) {
-        int digit = n % 10;
+bool isPalindrome(int num) {
+    int reversed = 0, original = num;
+    while (num != 0) {
+        int digit = num % 10;
         reversed = reversed * 10 + digit;
-        n /= 10;
+        num /= 10;
     }
     return original == reversed;
 }
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int a, b;
-    cin >> a >> b;
-
-    for (int i = a; i <= b; i++) {
-        if (isPrime(i) && isPalindrome(i)) {
-            cout << i << "\n";
+void findPrimePalindromes(int a, int b) {
+    if (a % 2 == 0) a++;  // 如果a是偶数，那么将它增加1，使它变为奇数
+    for (int i = a; i <= b; i += 2) {  // 每次增加2，跳过所有的偶数
+        if (isPalindrome(i) && isPrime(i)) {
+            std::cout << i << std::endl;
         }
     }
+}
 
+int main() {
+    int a, b;
+    std::cin >> a >> b;
+    findPrimePalindromes(a, b);
     return 0;
 }
