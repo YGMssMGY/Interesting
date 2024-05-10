@@ -1,46 +1,59 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> a, flag;
-int times_1 = 0, times_2 = 0, times_3 = 0, ans = 0, n;
+const int MAXN = 25;
+const int MAXG = 15;
+const int INF = 1e9;
+int dp[MAXN+1][1<<MAXG];
+int vit[MAXN+1];
+int feed[MAXG+1][MAXN+1];
+int v, g;
 
-void draw() {
-    for(int i = 0; i < times_1; i++)
-        flag[i] = 1;
-    for(int i = times_1; i < times_2 + times_1; i++)
-        flag[i] = 2;
-    for(int i = times_2 + times_1; i < n; i++)
-        flag[i] = 3;
+int ans[MAXG+1];
+int c[MAXG+1];
+int minn = INF;
+
+bool pd(int x) {
+    for(int i = 1; i <= v; i++) {
+        int sum = 0;
+        for(int j = 1; j <= x; j++)
+            sum += feed[c[j]][i];
+        if(sum < vit[i]) return false;
+    }
+    return true;
 }
 
-void Find() {
-    for(int i = 0; i < n; i++){
-        if(a[i] == 1) times_1++;
-        else if(a[i] == 2) times_2++;
-        else if(a[i] == 3) times_3++;
+void search(int t, int s) {
+    if(t > g) {
+        if(pd(s)) {
+            if(s < minn) {
+                minn = s;
+                for(int i = 1; i <= minn; i++)
+                    ans[i] = c[i];
+            }
+        }
+        return;
     }
-    draw();
+    c[s+1] = t;
+    search(t+1, s+1);
+    c[s+1] = 0;
+    search(t+1, s);
 }
 
 int main() {
-    int swap1 = 0, swap2 = 0;
-    cin >> n;
-    a.resize(n);
-    flag.resize(n);
-    for(int i = 0; i < n; i++)
-        cin >> a[i];
-    Find();
-    for(int i = 0; i < n; i++){
-        if(flag[i] == 1 && a[i] != 1)
-            ans++;
-        if(flag[i] == 2 && a[i] != 2)
-            ans++;
-        if(flag[i] == 1 && a[i] == 2)
-            swap1++;
-        if(flag[i] == 2 && a[i] == 1)
-            swap2++;
+    cin >> v;
+    for(int i = 1; i <= v; i++) cin >> vit[i];
+    cin >> g;
+    for(int i = 1; i <= g; i++) {
+        for(int j = 1; j <= v; j++) cin >> feed[i][j];
     }
-    ans -= min(swap1, swap2);
-    cout << ans;
+
+    search(1, 0);
+
+    cout << minn << " ";
+    sort(ans+1, ans+minn+1);
+    for(int i = 1; i <= minn; i++)
+        cout << ans[i] << (i == minn ? "\n" : " ");
+
     return 0;
 }
